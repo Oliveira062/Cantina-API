@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cantina
+    username: cantina
+    password: cantina123
+
+cantina:
+  jwt:
+    segredo: segredo-de-desenvolvimento-troque-em-producao-2026
+  admin:
+    email: admin@cantina.edu.br
+    senha: Admin@2026
+
+logging:
+  level:
+    br.edu.cantina: DEBUG

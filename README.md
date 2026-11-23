@@ -1,1 +1,62 @@
-# Cantina-API
+# Cantina Universitária - API REST
+
+API do sistema de pedidos da cantina, feita com Java 21 e Spring Boot 4.2.
+Usa PostgreSQL, JPA, Flyway, validação, autenticação JWT, Swagger e Docker.
+
+O passo a passo completo de como o projeto foi construído e de como ele funciona
+está no PDF que acompanha este projeto.
+
+## Subir com Docker (forma mais simples)
+
+```bash
+cp .env.example .env
+docker compose up -d --build
+```
+
+- Swagger: http://localhost:8080/swagger-ui.html
+- Saúde da API: http://localhost:8080/actuator/health
+- Administrador inicial: o e-mail e a senha definidos em `ADMIN_EMAIL` e `ADMIN_SENHA` no `.env`
+
+## Rodar sem Docker (para desenvolver)
+
+Com um PostgreSQL local (banco `cantina`, usuário `cantina`, senha `cantina123`):
+
+```bash
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
+No perfil `dev` o administrador é `admin@cantina.edu.br` / `Admin@2026`.
+
+## Testes
+
+```bash
+./mvnw test
+```
+
+Os testes de ponta a ponta contra a API rodando ficam em `qa/cantina.yaml` e são executados
+com a ferramenta `testador-api`:
+
+```bash
+ADMIN_SENHA=TroqueEstaSenha1 java -jar testador-api.jar qa/cantina.yaml
+```
+
+## Perfis e permissões
+
+| Ação | Cliente | Atendente | Cozinha | Admin |
+|---|:-:|:-:|:-:|:-:|
+| Ver cardápio | sim | sim | sim | sim |
+| Abrir pedido, itens, pagar | os próprios | para clientes | não | sim |
+| Pagar em dinheiro | não | sim | não | sim |
+| Iniciar preparo / marcar pronto | não | não | sim | sim |
+| Confirmar entrega | não | sim | não | sim |
+| Cancelar | antes de pagar | sim | não | sim |
+| Produtos, usuários, configuração | não | não | não | sim |
+
+## Onde estão os padrões do projeto original
+
+| Padrão | Onde ficou |
+|---|---|
+| Singleton | `ConfiguracaoCantina` (uma única linha no banco) e os beans do Spring |
+| Factory | `pagamento/PagamentoFactory` |
+| Strategy | `pagamento/EstrategiaPagamento` e as classes `PagamentoPix`, `PagamentoCartao`, `PagamentoDinheiro` |
+| Observer | `observer/ObservadorCliente` e `observer/ObservadorCozinha`, avisados por eventos do Spring |
