@@ -32,7 +32,7 @@ A interface fica em `src/main/resources/static` e é servida pela própria API, 
 Com um PostgreSQL local (banco `cantina`, usuário `cantina`, senha `cantina123`):
 
 ```bash
-./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 No perfil `dev` o administrador é `admin@cantina.edu.br` / `Admin@2026`.
@@ -40,7 +40,7 @@ No perfil `dev` o administrador é `admin@cantina.edu.br` / `Admin@2026`.
 ## Testes
 
 ```bash
-./mvnw test
+mvn test
 ```
 
 Os testes de ponta a ponta contra a API rodando ficam em `qa/cantina.yaml` e são executados
