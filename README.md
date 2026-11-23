@@ -3,9 +3,6 @@
 API do sistema de pedidos da cantina, feita com Java 21 e Spring Boot 4.2.
 Usa PostgreSQL, JPA, Flyway, validação, autenticação JWT, Swagger e Docker.
 
-O passo a passo completo de como o projeto foi construído e de como ele funciona
-está no PDF que acompanha este projeto.
-
 ## Subir com Docker (forma mais simples)
 
 ```bash
