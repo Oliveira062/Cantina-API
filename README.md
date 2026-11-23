@@ -29,7 +29,7 @@ A interface fica em `src/main/resources/static` e é servida pela própria API, 
 
 ## Rodar sem Docker (para desenvolver)
 
-Com um PostgreSQL local (banco `cantina`, usuário `cantina`, senha `cantina123`):
+Com o JDK 21, o Maven 3.9 ou mais novo e um PostgreSQL local (banco `cantina`, usuário `cantina`, senha `cantina123`):
 
 ```bash
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
