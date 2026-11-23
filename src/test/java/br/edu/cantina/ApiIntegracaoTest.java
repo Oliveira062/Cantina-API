@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -207,6 +208,31 @@ class ApiIntegracaoTest {
 
         mvc.perform(get("/api/auth/eu").header("Authorization", "Bearer " + token))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("A interface web é pública e sai com a política de segurança de conteúdo")
+    void interfacePublica() throws Exception {
+        mvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Security-Policy", containsString("default-src 'self'")));
+        mvc.perform(get("/js/app.js")).andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Só atendente e admin buscam clientes no balcão")
+    void buscaDeClientes() throws Exception {
+        String email = emailUnico();
+        registrar(email);
+        String cliente = login(email, SENHA);
+        String atendente = novoFuncionario("ATENDENTE");
+
+        mvc.perform(get("/api/clientes").param("busca", email).header("Authorization", "Bearer " + cliente))
+                .andExpect(status().isForbidden());
+        mvc.perform(get("/api/clientes").param("busca", email).header("Authorization", "Bearer " + atendente))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].perfil").value("CLIENTE"));
     }
 
     private String novoCliente() throws Exception {

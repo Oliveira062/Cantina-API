@@ -16,6 +16,8 @@ import java.util.List;
 @Service
 public class UsuarioService {
 
+    private static final int LIMITE_BUSCA = 20;
+
     private final UsuarioRepository repository;
     private final PasswordEncoder codificador;
 
@@ -37,6 +39,15 @@ public class UsuarioService {
     @Transactional(readOnly = true)
     public List<UsuarioResponse> listar() {
         return repository.findAllByOrderByNomeAsc().stream().map(UsuarioResponse::de).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<UsuarioResponse> buscarClientes(String busca) {
+        String termo = busca == null ? "" : busca.trim();
+        return repository.buscarClientesAtivos(termo).stream()
+                .limit(LIMITE_BUSCA)
+                .map(UsuarioResponse::de)
+                .toList();
     }
 
     @Transactional

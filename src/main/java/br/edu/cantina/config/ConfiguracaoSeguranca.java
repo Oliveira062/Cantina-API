@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -27,6 +28,12 @@ import java.util.List;
 public class ConfiguracaoSeguranca {
 
     private static final String[] ROTAS_PUBLICAS = {
+            "/",
+            "/index.html",
+            "/favicon.svg",
+            "/css/**",
+            "/js/**",
+            "/fontes/**",
             "/api/auth/login",
             "/api/auth/registrar",
             "/swagger-ui.html",
@@ -35,11 +42,18 @@ public class ConfiguracaoSeguranca {
             "/actuator/health"
     };
 
+    private static final String POLITICA_DE_CONTEUDO = "default-src 'self'; script-src 'self'; "
+            + "style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; "
+            + "connect-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'";
+
     @Bean
     public SecurityFilterChain filtroDeSeguranca(HttpSecurity http, JwtService jwtService,
                                                  UsuarioRepository usuarioRepository,
                                                  RespostaErroSeguranca respostaErro) throws Exception {
         http
+                .headers(cabecalhos -> cabecalhos
+                        .contentSecurityPolicy(csp -> csp.policyDirectives(POLITICA_DE_CONTEUDO))
+                        .referrerPolicy(referrer -> referrer.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER)))
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .httpBasic(AbstractHttpConfigurer::disable)

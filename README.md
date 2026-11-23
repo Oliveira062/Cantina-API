@@ -10,9 +10,22 @@ cp .env.example .env
 docker compose up -d --build
 ```
 
+- Interface web: http://localhost:8080
 - Swagger: http://localhost:8080/swagger-ui.html
 - Saúde da API: http://localhost:8080/actuator/health
 - Administrador inicial: o e-mail e a senha definidos em `ADMIN_EMAIL` e `ADMIN_SENHA` no `.env`
+
+## Interface web
+
+A interface fica em `src/main/resources/static` e é servida pela própria API, no mesmo endereço.
+É feita com HTML, CSS e JavaScript puros, sem framework e sem etapa de build.
+
+| Perfil | O que aparece |
+|---|---|
+| Cliente | Cardápio com a comanda do pedido, pagamento por PIX ou cartão, histórico dos pedidos e avisos |
+| Atendente | Balcão (busca o cliente e monta o pedido, inclusive em dinheiro com troco), lista de pedidos e entrega |
+| Cozinha | Fila com os pedidos para preparar e em preparo, atualizada a cada 10 segundos |
+| Admin | Painel com contadores e estoque baixo, todas as telas acima, produtos, equipe e configuração da cantina |
 
 ## Rodar sem Docker (para desenvolver)
 
