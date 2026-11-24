@@ -1,21 +1,21 @@
 # Cantina Universitária - API REST
 
 API do sistema de pedidos da cantina, feita com Java 21 e Spring Boot 4.2.
-Usa PostgreSQL, JPA, Flyway, validação, autenticação JWT, Swagger e Docker.
+Usa PostgreSQL, JPA, Flyway, validação, autenticação JWT, Swagger e Docker
 
-## Subir com Docker (forma mais simples)
+Docker
 
-```bash
+bash
 cp .env.example .env
 docker compose up -d --build
-```
+
 
 - Interface web: http://localhost:8080
 - Swagger: http://localhost:8080/swagger-ui.html
 - Saúde da API: http://localhost:8080/actuator/health
 - Administrador inicial: o e-mail e a senha definidos em `ADMIN_EMAIL` e `ADMIN_SENHA` no `.env`
 
-## Interface web
+Interface
 
 A interface fica em `src/main/resources/static` e é servida pela própria API, no mesmo endereço.
 É feita com HTML, CSS e JavaScript puros, sem framework e sem etapa de build.
@@ -27,7 +27,7 @@ A interface fica em `src/main/resources/static` e é servida pela própria API, 
 | Cozinha | Fila com os pedidos para preparar e em preparo, atualizada a cada 10 segundos |
 | Admin | Painel com contadores e estoque baixo, todas as telas acima, produtos, equipe e configuração da cantina |
 
-## Rodar sem Docker (para desenvolver)
+Sem Docker
 
 Com o JDK 21, o Maven 3.9 ou mais novo e um PostgreSQL local (banco `cantina`, usuário `cantina`, senha `cantina123`):
 
@@ -39,18 +39,18 @@ No perfil `dev` o administrador é `admin@cantina.edu.br` / `Admin@2026`.
 
 ## Testes
 
-```bash
+bash
 mvn test
-```
+
 
 Os testes de ponta a ponta contra a API rodando ficam em `qa/cantina.yaml` e são executados
 com a ferramenta `testador-api`:
 
-```bash
+bash
 ADMIN_SENHA=TroqueEstaSenha1 java -jar testador-api.jar qa/cantina.yaml
-```
 
-## Perfis e permissões
+
+Perfis e permissões
 
 | Ação | Cliente | Atendente | Cozinha | Admin |
 |---|:-:|:-:|:-:|:-:|
@@ -62,7 +62,7 @@ ADMIN_SENHA=TroqueEstaSenha1 java -jar testador-api.jar qa/cantina.yaml
 | Cancelar | antes de pagar | sim | não | sim |
 | Produtos, usuários, configuração | não | não | não | sim |
 
-## Onde estão os padrões do projeto original
+Onde estão os padrões do projeto original
 
 | Padrão | Onde ficou |
 |---|---|
